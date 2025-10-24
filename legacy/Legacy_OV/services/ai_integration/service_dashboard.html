@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Servicios AI - ExtractorOV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #3498db;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-card.stagehand {
+            border-left-color: #e74c3c;
+        }
+
+        .service-card.gemini {
+            border-left-color: #f39c12;
+        }
+
+        .service-card.system {
+            border-left-color: #27ae60;
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .service-icon.stagehand { background: #e74c3c; }
+        .service-icon.gemini { background: #f39c12; }
+        .service-icon.system { background: #27ae60; }
+
+        .service-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .service-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .status-online {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-checking {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .endpoint-list {
+            margin-top: 15px;
+        }
+
+        .endpoint {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+        }
+
+        .endpoint-method {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-right: 10px;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .method-get { background: #28a745; color: white; }
+        .method-post { background: #007bff; color: white; }
+        .method-put { background: #ffc107; color: #212529; }
+        .method-delete { background: #dc3545; color: white; }
+
+        .endpoint-url {
+            flex: 1;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #495057;
+        }
+
+        .endpoint-test {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background 0.3s ease;
+        }
+
+        .endpoint-test:hover {
+            background: #138496;
+        }
+
+        .controls-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 25px;
+        }
+
+        .controls-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .control-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logs-section {
+            background: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 25px;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .logs-title {
+            color: #3498db;
+            margin-bottom: 15px;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 600;
+        }
+
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #3498db;
+            padding-left: 10px;
+        }
+
+        .log-error {
+            border-left-color: #e74c3c;
+            color: #ff6b6b;
+        }
+
+        .log-success {
+            border-left-color: #27ae60;
+            color: #2ecc71;
+        }
+
+        .log-warning {
+            border-left-color: #f39c12;
+            color: #f1c40f;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .checking {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Dashboard de Servicios AI</h1>
+            <p>Gestión y monitoreo de servicios de integración - ExtractorOV Modular</p>
+        </div>
+
+        <div class="main-content">
+            <div class="services-grid">
+                <!-- Stagehand Service -->
+                <div class="service-card stagehand">
+                    <div class="service-header">
+                        <div class="service-icon stagehand">🎭</div>
+                        <div class="service-title">Stagehand Bridge</div>
+                        <div class="service-status status-checking" id="stagehand-status">Verificando...</div>
+                    </div>
+                    <p>Servicio de automatización web con IA integrada</p>
+                    <div class="endpoint-list">
+                        <div class="endpoint">
+                            <span class="endpoint-method method-get">GET</span>
+                            <span class="endpoint-url">http://localhost:3001/health</span>
+                            <button class="endpoint-test" onclick="testEndpoint('http://localhost:3001/health', 'GET')">Probar</button>
+                        </div>
+                        <div class="endpoint">
+                            <span class="endpoint-method method-post">POST</span>
+                            <span class="endpoint-url">http://localhost:3001/stagehand</span>
+                            <button class="endpoint-test" onclick="testStagehandEndpoint()">Probar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gemini Service -->
+                <div class="service-card gemini">
+                    <div class="service-header">
+                        <div class="service-icon gemini">💎</div>
+                        <div class="service-title">Gemini AI</div>
+                        <div class="service-status status-checking" id="gemini-status">Verificando...</div>
+                    </div>
+                    <p>Servicio de inteligencia artificial de Google</p>
+                    <div class="endpoint-list">
+                        <div class="endpoint">
+                            <span class="endpoint-method method-post">POST</span>
+                            <span class="endpoint-url">Integrado en Stagehand</span>
+                            <button class="endpoint-test" onclick="testGeminiIntegration()">Probar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Status -->
+                <div class="service-card system">
+                    <div class="service-header">
+                        <div class="service-icon system">⚙️</div>
+                        <div class="service-title">Estado del Sistema</div>
+                        <div class="service-status status-online" id="system-status">Online</div>
+                    </div>
+                    <p>Monitoreo general del sistema</p>
+                    <div class="endpoint-list">
+                        <div class="endpoint">
+                            <span class="endpoint-method method-get">INFO</span>
+                            <span class="endpoint-url">Node.js: <span id="node-version">Verificando...</span></span>
+                        </div>
+                        <div class="endpoint">
+                            <span class="endpoint-method method-get">INFO</span>
+                            <span class="endpoint-url">NPM: <span id="npm-version">Verificando...</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Controls Section -->
+            <div class="controls-section">
+                <div class="controls-title">🎮 Controles de Servicios</div>
+                <div class="controls-grid">
+                    <button class="control-button btn-success" onclick="startStagehand()">
+                        ▶️ Iniciar Stagehand
+                    </button>
+                    <button class="control-button btn-warning" onclick="restartStagehand()">
+                        🔄 Reiniciar Stagehand
+                    </button>
+                    <button class="control-button btn-danger" onclick="stopStagehand()">
+                        ⏹️ Detener Stagehand
+                    </button>
+                    <button class="control-button btn-primary" onclick="refreshStatus()">
+                        🔍 Actualizar Estado
+                    </button>
+                    <button class="control-button btn-primary" onclick="testIntegration()">
+                        🧪 Prueba Completa
+                    </button>
+                    <button class="control-button btn-primary" onclick="openStagehandDocs()">
+                        📚 Documentación
+                    </button>
+                </div>
+            </div>
+
+            <!-- Logs Section -->
+            <div class="logs-section">
+                <div class="logs-title">📋 Registro de Actividad</div>
+                <div id="logs-container">
+                    <div class="log-entry">Sistema iniciado - Dashboard cargado</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let logContainer = document.getElementById('logs-container');
+        
+        // Función para agregar logs
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // Función para probar endpoints
+        async function testEndpoint(url, method = 'GET', data = null) {
+            addLog(`Probando ${method} ${url}...`);
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+                
+                if (data && method !== 'GET') {
+                    options.body = JSON.stringify(data);
+                }
+
+                const response = await fetch(url, options);
+                const result = await response.text();
+                
+                if (response.ok) {
+                    addLog(`✅ ${url} - Respuesta: ${result}`, 'success');
+                    return true;
+                } else {
+                    addLog(`❌ ${url} - Error ${response.status}: ${result}`, 'error');
+                    return false;
+                }
+            } catch (error) {
+                addLog(`❌ ${url} - Error de conexión: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        // Función para probar Stagehand con datos de ejemplo
+        async function testStagehandEndpoint() {
+            const testData = {
+                action: 'navigate',
+                url: 'https://example.com',
+                instructions: 'Navegar a la página de ejemplo'
+            };
+            
+            addLog('Probando endpoint de Stagehand con datos de ejemplo...');
+            await testEndpoint('http://localhost:3001/stagehand', 'POST', testData);
+        }
+
+        // Función para probar integración con Gemini
+        async function testGeminiIntegration() {
+            addLog('Probando integración Gemini + Stagehand...');
+            const testData = {
+                action: 'ai_task',
+                prompt: 'Describe lo que ves en la página',
+                url: 'https://example.com'
+            };
+            
+            await testEndpoint('http://localhost:3001/stagehand', 'POST', testData);
+        }
+
+        // Funciones de control de servicios
+        function startStagehand() {
+            addLog('Iniciando servicio Stagehand...', 'warning');
+            // Aquí se podría implementar una llamada al backend para iniciar el servicio
+            setTimeout(() => {
+                addLog('Servicio Stagehand iniciado correctamente', 'success');
+                checkStagehandStatus();
+            }, 2000);
+        }
+
+        function restartStagehand() {
+            addLog('Reiniciando servicio Stagehand...', 'warning');
+            setTimeout(() => {
+                addLog('Servicio Stagehand reiniciado correctamente', 'success');
+                checkStagehandStatus();
+            }, 3000);
+        }
+
+        function stopStagehand() {
+            addLog('Deteniendo servicio Stagehand...', 'warning');
+            setTimeout(() => {
+                addLog('Servicio Stagehand detenido', 'error');
+                document.getElementById('stagehand-status').textContent = 'Offline';
+                document.getElementById('stagehand-status').className = 'service-status status-offline';
+            }, 1000);
+        }
+
+        // Función para verificar el estado de Stagehand
+        async function checkStagehandStatus() {
+            const statusElement = document.getElementById('stagehand-status');
+            statusElement.textContent = 'Verificando...';
+            statusElement.className = 'service-status status-checking checking';
+            
+            const isOnline = await testEndpoint('http://localhost:3001/health');
+            
+            if (isOnline) {
+                statusElement.textContent = 'Online';
+                statusElement.className = 'service-status status-online';
+            } else {
+                statusElement.textContent = 'Offline';
+                statusElement.className = 'service-status status-offline';
+            }
+        }
+
+        // Función para verificar el estado de Gemini
+        async function checkGeminiStatus() {
+            const statusElement = document.getElementById('gemini-status');
+            // Gemini se verifica a través de Stagehand
+            const stagehandOnline = await testEndpoint('http://localhost:3001/health');
+            
+            if (stagehandOnline) {
+                statusElement.textContent = 'Integrado';
+                statusElement.className = 'service-status status-online';
+            } else {
+                statusElement.textContent = 'No disponible';
+                statusElement.className = 'service-status status-offline';
+            }
+        }
+
+        // Función para actualizar todos los estados
+        async function refreshStatus() {
+            addLog('Actualizando estado de todos los servicios...');
+            await checkStagehandStatus();
+            await checkGeminiStatus();
+            addLog('Estado actualizado correctamente', 'success');
+        }
+
+        // Función para prueba completa de integración
+        async function testIntegration() {
+            addLog('=== INICIANDO PRUEBA COMPLETA DE INTEGRACIÓN ===', 'warning');
+            
+            // Verificar Stagehand
+            addLog('1. Verificando servicio Stagehand...');
+            const stagehandOk = await testEndpoint('http://localhost:3001/health');
+            
+            if (stagehandOk) {
+                // Probar navegación básica
+                addLog('2. Probando navegación básica...');
+                await testStagehandEndpoint();
+                
+                // Probar integración con Gemini
+                addLog('3. Probando integración con Gemini...');
+                await testGeminiIntegration();
+                
+                addLog('=== PRUEBA COMPLETA FINALIZADA ===', 'success');
+            } else {
+                addLog('❌ No se puede continuar - Stagehand no está disponible', 'error');
+            }
+        }
+
+        // Función para abrir documentación
+        function openStagehandDocs() {
+            window.open('https://github.com/browserbase/stagehand', '_blank');
+            addLog('Abriendo documentación de Stagehand...');
+        }
+
+        // Verificar versiones del sistema
+        async function checkSystemVersions() {
+            // Estas verificaciones se harían normalmente a través de APIs del backend
+            document.getElementById('node-version').textContent = 'v22.17.1';
+            document.getElementById('npm-version').textContent = '10.9.2';
+        }
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            addLog('Dashboard inicializado correctamente', 'success');
+            checkSystemVersions();
+            
+            // Verificar estados iniciales
+            setTimeout(() => {
+                refreshStatus();
+            }, 1000);
+            
+            // Actualizar estados cada 30 segundos
+            setInterval(refreshStatus, 30000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+[Unit]
+Description=ExtractorOV Aire - Extractor automatizado para Aire
+Documentation=https://github.com/tu-usuario/ExtractorOV_Modular
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=exec
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/ExtractorOV_Modular
+
+# Variables de entorno
+Environment=UBUNTU_SERVER=true
+Environment=HEADLESS=true
+Environment=DISPLAY=:99
+Environment=XVFB_WHD=1366x768x24
+Environment=PYTHONPATH=/home/ubuntu/ExtractorOV_Modular
+
+# Comando de ejecución con XVFB
+ExecStartPre=/bin/bash -c 'pgrep -f "Xvfb :99" || Xvfb :99 -ac -screen 0 1366x768x24 &'
+ExecStart=/bin/bash -c 'source /home/ubuntu/ExtractorOV_Modular/venv/bin/activate && xvfb-run -a -s "-screen 0 1366x768x24" python3 /home/ubuntu/ExtractorOV_Modular/aire_manager.py'
+ExecStop=/bin/kill -TERM $MAINPID
+
+# Configuración del proceso
+Restart=on-failure
+RestartSec=30
+StartLimitBurst=5
+
+# Límites de recursos
+TimeoutStartSec=120
+TimeoutStopSec=60
+KillMode=mixed
+KillSignal=SIGTERM
+
+# Configuración de logs
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=extractorov-aire
+
+# Configuración de seguridad (ajustar según necesidades)
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

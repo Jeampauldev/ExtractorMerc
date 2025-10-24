@@ -1,0 +1,102 @@
+ARCHIVOS PARA SUBIR A PRODUCCIÓN - SISTEMA MERCURIO
+=====================================================
+
+📁 ESTRUCTURA COMPLETA PARA PRODUCCIÓN:
+
+Merc/
+├── main.py                                    ✅ OBLIGATORIO - Punto de entrada
+├── requirements.txt                           ✅ OBLIGATORIO - Dependencias
+├── flujos.yaml                               ✅ OBLIGATORIO - Configuración flujos
+├── .env.template                             ✅ OBLIGATORIO - Plantilla variables
+├── run_afinia_only.py                        ✅ OBLIGATORIO - Script específico
+│
+├── config/
+│   ├── __init__.py                           ✅ INCLUIR
+│   └── afinia_config.py                      ✅ INCLUIR - Config Mercurio
+│
+├── core/
+│   ├── __init__.py                           ✅ INCLUIR - Componentes base
+│   ├── base_extractor.py                     ✅ INCLUIR - Extractor base
+│   ├── browser_manager.py                    ✅ INCLUIR - Gestor navegadores
+│   ├── authentication_manager.py             ✅ INCLUIR - Autenticación
+│   ├── mercurio_adapter.py                   ✅ INCLUIR - Adaptador Mercurio
+│   ├── afinia_data_processor.py              ✅ INCLUIR - Procesador Afinia
+│   ├── aire_data_processor.py                ✅ INCLUIR - Procesador Aire
+│   ├── afinia_database_manager.py            ✅ INCLUIR - BD Manager Afinia
+│   ├── aire_database_manager.py              ✅ INCLUIR - BD Manager Aire
+│   ├── data_processor.py                     ✅ INCLUIR - Procesador general
+│   ├── download_reports.py                   ✅ INCLUIR - Descarga reportes
+│   ├── upload_letters.py                     ✅ INCLUIR - Carga cartas
+│   └── clean_and_transform.py                ✅ INCLUIR - Limpieza datos
+│
+├── services/
+│   ├── afinia_extractor.py                   ✅ INCLUIR - Extractor Afinia
+│   └── aire_extractor.py                     ✅ INCLUIR - Extractor Aire
+│
+├── utils/
+│   ├── __init__.py                           ✅ INCLUIR
+│   ├── afinia_validators.py                  ✅ INCLUIR - Validadores Mercurio
+│   └── aire_logger.py                        ✅ INCLUIR - Sistema logging
+│
+└── scripts/
+    ├── direct_json_to_rds_loader.py          ✅ INCLUIR - Carga directa RDS
+    ├── direct_json_to_rds_loader_with_files.py ✅ INCLUIR - Carga con S3
+    ├── validate_functionality.py             ✅ INCLUIR - Validación sistema
+    └── cross_platform_runner.py              ✅ INCLUIR - Ejecutor multiplataforma
+
+🚫 NO INCLUIR EN PRODUCCIÓN:
+============================
+
+❌ .venv/                    # Entorno virtual (recrear en servidor)
+❌ legacy/                   # Código legacy no usado
+❌ tests/                    # Tests de desarrollo
+❌ docs/                     # Documentación desarrollo
+❌ ai-context/               # Contexto IA
+❌ __pycache__/              # Cache Python
+❌ scripts/clean_*.py        # Scripts limpieza
+❌ scripts/test_*.py         # Scripts testing
+❌ scripts/analyze_*.py      # Scripts análisis
+❌ scripts/fix_*.py          # Scripts corrección
+❌ scripts/*.ps1             # Scripts PowerShell
+❌ scripts/*.sh              # Scripts bash
+❌ scripts/npm_*.md          # Documentos npm
+
+📦 COMANDO DE EMPAQUETADO:
+=========================
+
+tar -czf mercurio_production.tar.gz \
+  --exclude='.venv' \
+  --exclude='legacy' \
+  --exclude='tests' \
+  --exclude='docs' \
+  --exclude='ai-context' \
+  --exclude='__pycache__' \
+  --exclude='*.pyc' \
+  --exclude='.pytest_cache' \
+  --exclude='scripts/clean_*.py' \
+  --exclude='scripts/test_*.py' \
+  --exclude='scripts/analyze_*.py' \
+  --exclude='scripts/fix_*.py' \
+  --exclude='scripts/*.ps1' \
+  --exclude='scripts/*.sh' \
+  Merc/
+
+🔧 CONFIGURACIÓN REQUERIDA:
+===========================
+
+1. Crear archivo .env basado en .env.template
+2. Configurar credenciales Mercurio (Afinia y Aire)
+3. Configurar conexión RDS AWS
+4. Configurar acceso S3 AWS
+5. Instalar dependencias: pip install -r requirements.txt
+6. Instalar navegadores: playwright install chromium
+
+✅ SISTEMA LISTO PARA PRODUCCIÓN
+================================
+
+- Carga directa a RDS ✅
+- Validación de duplicados ✅
+- Arquitectura modular ✅
+- Configuración flexible ✅
+- Logging centralizado ✅
+- Manejo de errores ✅

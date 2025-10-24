@@ -1,0 +1,63 @@
+# ============================================================================
+# EXTRACTOR OV MODULAR - DEPENDENCIAS OPTIMIZADAS
+# ============================================================================
+# Sistema modular para extracción de PQR desde Oficina Virtual
+# Empresas: Afinia y Aire
+# Plataformas: Oficina Virtual
+
+# ============================================================================
+# FRAMEWORK WEB Y API
+# ============================================================================
+fastapi==0.104.1          # Framework web moderno para APIs REST
+uvicorn[standard]==0.24.0 # Servidor ASGI para FastAPI
+python-multipart==0.0.9   # Soporte para formularios multipart
+python-dotenv==1.0.0      # Manejo de variables de entorno
+pydantic==2.5.0          # Validación de datos y tipos
+
+# ============================================================================
+# AUTOMATIZACIÓN WEB Y SCRAPING
+# ============================================================================
+playwright==1.40.0        # Automatización de navegadores principal
+requests==2.31.0          # Cliente HTTP para APIs
+httpx==0.25.0             # Cliente HTTP asíncrono
+beautifulsoup4==4.12.2    # Parsing de HTML
+
+# ============================================================================
+# PROCESAMIENTO DE DATOS
+# ============================================================================
+pandas==2.1.4             # Manipulación y análisis de datos
+openpyxl==3.1.2           # Lectura y escritura de archivos Excel
+xlrd==2.0.1               # Lectura de archivos Excel legacy
+
+# ============================================================================
+# BASE DE DATOS
+# ============================================================================
+sqlalchemy==2.0.23        # ORM para manejo de base de datos
+pymysql==1.1.0            # Driver MySQL para conexión a RDS AWS
+
+# ============================================================================
+# UTILIDADES CORE
+# ============================================================================
+schedule==1.2.2           # Programación de tareas
+loguru==0.7.2             # Sistema de logging avanzado
+python-dateutil==2.8.2    # Manejo de fechas
+pytz==2023.3              # Zonas horarias
+typing-extensions==4.8.0  # Extensiones de tipos
+
+# ============================================================================
+# AWS S3 - MÓDULO DE CARGA DE ARCHIVOS
+# ============================================================================
+boto3==1.34.0             # SDK de AWS para Python
+botocore==1.34.0          # Core de boto3
+
+# ============================================================================
+# GENERACIÓN DE REPORTES
+# ============================================================================
+reportlab==4.0.7          # Generación de PDFs y reportes
+
+# ============================================================================
+# TESTING Y DESARROLLO
+# ============================================================================
+pytest==7.4.3             # Framework de testing
+pytest-asyncio==0.21.1    # Testing asíncrono
+black==23.11.0            # Formateador de código

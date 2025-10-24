@@ -1,0 +1,16 @@
+Flujo del extractor: Mercurio para afinia y aire
+
+paso 1.1: abrir la pagina de mercurio para Afinia = https://serviciospqrs.afinia.com.co/mercurio/index.jsp?err=
+paso 1.2: abrir la pagina de mercurio para Air-e = https://caribesol.servisoft.com.co/mercurio/index.jsp?err=0
+paso 2.1: afinia -> agregar usuario = "281005131" contraseña = "123"
+paso 2.2: Air-e -> agregar usuario = "MHERNANDEZO" contraseña = "1234"
+paso 3: click en ingresar
+paso 4.1: Ir afinia pqr pendiente = https://serviciospqrs.afinia.com.co/mercurio/servlet/ControllerMercurio?command=consultaEspecial&tipoOperacion=parametros&idCnslta=00000015
+paso 4.2: Ir afinia Verbales prqs pendientes=https://serviciospqrs.afinia.com.co/mercurio/servlet/ControllerMercurio?command=consultaEspecial&tipoOperacion=parametros&idCnslta=00000066
+paso 4.3: para air-e pqr pendientes = https://caribesol.servisoft.com.co/mercurio/servlet/ControllerMercurio?command=consultaEspecial&tipoOperacion=parametros&idCnslta=00000015
+paso 5: Para cada uno de los link se debe ingresar "FECHA DESDE" con 30 dias antes de la "FECHA HASTA" que debe ser la de hoy.
+paso 6: dar clic en "General en Excel"
+paso 7: se descarga un csv con los datos marcarlo con (afinia/aire)_(pqr_pend/pqr_verb_pend)(_timestap) de la descarga
+paso 8: ese csv debe ser filtrado por asunto = debe quedar (PETICION, QUEJA, RECLAMO, TMP)  Y PASOS = deben quedar 2,3,4
+paso 9: Se genera un csv procesado de lo que se filtro y se le agrega (_procesado)
+paso 10: este archivo se debe cargar a la base RDS en el esquema data_general y debe cargar en mercurio_aire_pendientes/mercurio_afinia_pendientes/mercurio_afinia_verbales 

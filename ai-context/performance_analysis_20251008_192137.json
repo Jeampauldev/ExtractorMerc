@@ -1,0 +1,123 @@
+{
+  "analysis_timestamp": "2025-10-08T19:21:37.548571",
+  "format_analysis": {
+    "professional_format_count": 82,
+    "legacy_format_count": 209,
+    "total_lines": 447,
+    "format_compliance": 18.344519015659955,
+    "professional_pattern": "\\[\\d{4}-\\d{2}-\\d{2}_\\d{2}:\\d{2}:\\d{2}\\]\\[[\\w]+\\]\\[[\\w]+\\]\\[[\\w]+\\]\\[[\\w]+\\] - .*",
+    "legacy_patterns": [
+      "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2},\\d+ - [\\w\\.]+ - [\\w]+ - .*",
+      "\\[[\\w-]+\\] [\\w]+: .*"
+    ],
+    "samples": {
+      "professional": [
+        "[2025-10-08_19:16:15][afinia][manager][main][INFO] - INICIANDO AfiniaManager inicializado - Headless: True, Test: True",
+        "[2025-10-08_19:16:15][afinia][manager][main][INFO] - ============================================================",
+        "[2025-10-08_19:16:15][afinia][manager][main][INFO] - INICIANDO INICIANDO EXTRACCIÓN DE AFINIA"
+      ],
+      "legacy": [
+        "2025-10-08 18:59:40,908 - afinia_manager - INFO - INICIANDO AfiniaManager inicializado - Headless: False, Test: True",
+        "2025-10-08 18:59:40,909 - afinia_manager - INFO - ============================================================",
+        "2025-10-08 18:59:40,909 - afinia_manager - INFO - INICIANDO INICIANDO EXTRACCIÓN DE AFINIA",
+        "UNKNOWN: 2025-10-08 18:59:43,759 - AFINIA-PAGINATION - INFO - EXITOSO PaginationManager inicializado",
+        "UNKNOWN: 2025-10-08 18:59:43,759 - AFINIA-PAGINATION - INFO - ARCHIVOS Control dir: C:\\00_Project_Dev\\ExtractorOV_Modular\\data\\downloads\\afinia\\oficina_virtual\\pagination_control"
+      ]
+    }
+  },
+  "performance_metrics": {},
+  "component_analysis": {
+    "manager.main": {
+      "total_executions": 82,
+      "success_count": 23,
+      "failed_count": 0,
+      "success_rate": 28.04878048780488,
+      "bottleneck_score": 0.0
+    }
+  },
+  "session_analysis": {
+    "total_sessions": 6,
+    "successful_sessions": 2,
+    "average_duration": 156.55,
+    "total_pqrs_processed": 4,
+    "sessions": [
+      {
+        "start_time": "",
+        "duration": 135.8,
+        "success": true,
+        "pqrs_processed": 1,
+        "files_downloaded": 1
+      },
+      {
+        "start_time": "",
+        "duration": 177.3,
+        "success": true,
+        "pqrs_processed": 3,
+        "files_downloaded": 1
+      },
+      {
+        "start_time": "2025-10-08_19:16:15",
+        "duration": 0.0,
+        "success": false,
+        "pqrs_processed": 0,
+        "files_downloaded": 0
+      },
+      {
+        "start_time": "",
+        "duration": 0.0,
+        "success": false,
+        "pqrs_processed": 0,
+        "files_downloaded": 0
+      },
+      {
+        "start_time": "",
+        "duration": 0.0,
+        "success": false,
+        "pqrs_processed": 0,
+        "files_downloaded": 0
+      },
+      {
+        "start_time": "",
+        "duration": 0.0,
+        "success": false,
+        "pqrs_processed": 0,
+        "files_downloaded": 0
+      }
+    ]
+  },
+  "projections": {
+    "current_performance": {
+      "avg_session_duration_seconds": 156.6,
+      "avg_pqrs_per_session": 2,
+      "avg_time_per_pqr_seconds": 78.3,
+      "sessions_analyzed": 2
+    },
+    "scenario_200_records_15_pagination": {
+      "total_records": 200,
+      "records_per_page": 15,
+      "total_pages": 14,
+      "estimated_total_duration_minutes": 260.9,
+      "estimated_sessions_needed": 100,
+      "breakdown": {
+        "login_and_setup_per_session": 47.0,
+        "pqr_processing_per_session": 109.6,
+        "parallel_optimization_potential": 6262.0,
+        "estimated_with_optimization_minutes": 156.6
+      }
+    },
+    "optimization_targets": {
+      "current_bottlenecks": [],
+      "time_reduction_opportunities": {},
+      "scalability_recommendations": [
+        "Para procesar 200 registros eficientemente, considerar:",
+        "1. Paralelización: 2-3 sesiones concurrentes",
+        "2. Optimización de timeouts y esperas",
+        "3. Mejora del cache de autenticación",
+        "4. Reducción de screenshots innecesarios"
+      ]
+    }
+  },
+  "recommendations": [
+    "❗ CRÍTICO: Formato de logging al 18.3%. Migrar 209 líneas restantes al formato profesional."
+  ]
+}
