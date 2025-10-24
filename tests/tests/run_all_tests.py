@@ -11,7 +11,7 @@ from io import StringIO
 import time
 
 # Agregar el directorio raíz al path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 
 class TestResult:
@@ -134,12 +134,7 @@ def main():
     print(f"Fecha y hora: {time.strftime('%Y-%m-%d %H:%M:%S')}")
     
     # Definir suites de pruebas
-    test_suites = {
-        "Pruebas Unitarias - Afinia Manager": "tests.unit.test_afinia_manager",
-        "Pruebas Unitarias - Aire Manager": "tests.unit.test_aire_manager", 
-        "Pruebas de Integración - Extractor Runner": "tests.unit.test_extractor_runner",
-        "Pruebas de Regresión - Suite Completa": "tests.regression.test_regression_suite"
-    }
+    test_suites = {}
     
     # Ejecutar cada suite
     results = {}

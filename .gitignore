@@ -117,3 +117,4 @@ screenshots/
 # Logs
 logs/
 *.log
+legacy/
