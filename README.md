@@ -1,10 +1,10 @@
-# ExtractorOV Modular
+# ExtractorMERC - Sistema de Extracción Modular
 
-Sistema modular profesional para la extracción automatizada de datos de PQRs (Peticiones, Quejas y Reclamos) desde las plataformas de Oficina Virtual de Afinia y Aire en Barranquilla, Colombia.
+Sistema modular profesional para la extracción automatizada de datos desde diversas plataformas web. Actualmente implementado para las plataformas de Afinia y Aire en Barranquilla, Colombia.
 
 ## Características Principales
 
-- **Extracción Automatizada**: Procesamiento inteligente de PQRs desde plataformas web oficiales
+- **Extracción Automatizada**: Procesamiento inteligente de datos desde cualquier plataforma web configurable.
 - **Arquitectura Modular**: Diseño escalable y mantenible con separación clara de responsabilidades
 - **Modo Dual**: Ejecución en modo visual (con interfaz) o headless (sin interfaz) para diferentes entornos
 - **Filtrado Avanzado**: Sistema de filtros por fechas, estado y criterios personalizados
@@ -15,7 +15,7 @@ Sistema modular profesional para la extracción automatizada de datos de PQRs (P
 - **Métricas Integradas**: Sistema de monitoreo y métricas de rendimiento
 
 ## Arquitectura del Sistema
-
+ 
 ```
 ExtractorOV_Modular/
 ├── src/                    # Código fuente principal

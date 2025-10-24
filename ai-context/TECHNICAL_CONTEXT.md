@@ -1,11 +1,10 @@
-# Contexto Técnico - ExtractorOV_Modular
+# Contexto Técnico - Ecosistema `Mercurio`
 
 ## Para Agentes IA: Información Técnica Detallada
 
 Este documento proporciona contexto técnico profundo sobre la arquitectura y funcionamiento del sistema para facilitar el trabajo de agentes IA.
 
 ---
-
 ## Estado Actual del Sistema
 
 ### ✅ Completado y Funcional
@@ -13,10 +12,10 @@ Este documento proporciona contexto técnico profundo sobre la arquitectura y fu
 - **Limpieza de emojis** en archivos críticos, componentes y servicios
 - **Managers principales** (afinia_manager.py, aire_manager.py) funcionando
 - **Servicios de datos** (database_service.py, s3_uploader_service.py) operativos
-- **Componentes modulares** (pagination, filters, downloads) activos
+- **Componentes modulares** (pagination, filters, downloads) activos dentro de la estructura `Merc/`
 
 ### 🔄 En Desarrollo/Pendiente
-- **Carga masiva a RDS** para tablas `ov_afinia` y `ov_aire` en esquema `data`
+- **Carga masiva a RDS** para tablas `mercurio_afinia` y `mercurio_aire` en esquema `data`
 - **Integración completa S3** con metadatos y compresión
 - **Scripts de mantenimiento** automatizados
 - **Dashboard web** de monitoreo
@@ -31,7 +30,7 @@ Este documento proporciona contexto técnico profundo sobre la arquitectura y fu
 CREATE SCHEMA IF NOT EXISTS data;
 
 -- Tabla para datos de Afinia
-CREATE TABLE data.ov_afinia (
+CREATE TABLE data.mercurio_afinia (
     id SERIAL PRIMARY KEY,
     pqr_number VARCHAR(50) UNIQUE NOT NULL,
     extraction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -43,7 +42,7 @@ CREATE TABLE data.ov_afinia (
 );
 
 -- Tabla para datos de Aire
-CREATE TABLE data.ov_aire (
+CREATE TABLE data.mercurio_aire (
     id SERIAL PRIMARY KEY,
     pqr_number VARCHAR(50) UNIQUE NOT NULL,
     extraction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

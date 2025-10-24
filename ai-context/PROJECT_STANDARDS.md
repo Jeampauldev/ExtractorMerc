@@ -1,6 +1,6 @@
-# Estándares del Proyecto ExtractorOV_Modular
+# Estándares del Proyecto ExtractorMERC
 
-## Información para Agentes IA y Desarrolladores
+## 🤖 Información para Agentes IA y Desarrolladores
 
 Este documento establece los estándares profesionales que deben seguirse al trabajar con este proyecto.
 
@@ -19,9 +19,9 @@ Este proyecto ha sido desarrollado con estándares profesionales empresariales, 
 ### 1. Logging Sin Emojis
 
 **FORMATO OBLIGATORIO:**
-```
-[YYYY-MM-DD_HH:MM:SS][servicio][core][componente][LEVEL] - mensaje
-```
+```log
+[YYYY-MM-DD_HH:MM:SS][mercurio][flujo][componente][LEVEL] - mensaje
+``` 
 
 **EJEMPLOS CORRECTOS:**
 ```

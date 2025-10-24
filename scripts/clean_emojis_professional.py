@@ -13,6 +13,7 @@ Desarrollado por: ISES | Analyst Data Jeam Paul Arcon Solano
 import os
 import re
 from pathlib import Path
+import logging
 from typing import Dict, List, Tuple
 
 class EmojiCleaner:
@@ -78,6 +79,7 @@ class EmojiCleaner:
         """
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
+                # print(f"DEBUG: Leyendo archivo {file_path}") # Debugging
                 content = f.read()
             
             original_content = content
@@ -137,8 +139,8 @@ class EmojiCleaner:
         """Limpia archivos críticos del sistema"""
         
         critical_files = [
-            'afinia_manager.py',
-            'aire_manager.py'
+            'Merc/main.py',
+            'Merc/services/afinia_extractor.py',
         ]
         
         self._process_file_list(critical_files, "CRITICOS")
@@ -147,13 +149,13 @@ class EmojiCleaner:
         """Limpia archivos de componentes menos críticos"""
         
         component_files = [
-            'src/components/afinia_popup_handler.py',
-            'src/components/afinia_filter_manager.py',
-            'src/components/afinia_pagination_manager.py',
-            'src/components/afinia_download_manager.py',
-            'src/components/afinia_pqr_processor.py',
-            'src/components/aire_pqr_processor.py',
-            'src/components/popup_handler.py'
+            'Merc/components/popup_handler.py',
+            'Merc/components/filter_manager.py',
+            'Merc/components/pagination_manager.py',
+            'Merc/components/download_manager.py',
+            'Merc/processors/pqr_processor.py', # Genérico o específico
+            'Merc/processors/aire_pqr_processor.py', # Si existe uno específico de Aire
+            'Merc/core/browser_manager.py'
         ]
         
         self._process_file_list(component_files, "COMPONENTES")
@@ -162,9 +164,9 @@ class EmojiCleaner:
         """Limpia archivos de servicios"""
         
         service_files = [
-            'src/services/s3_uploader_service.py',
-            'src/services/data_loader_service.py',
-            'src/services/database_service.py'
+            'Merc/services/s3_manager.py',
+            'Merc/services/data_loader.py',
+            'Merc/core/database_manager.py'
         ]
         
         self._process_file_list(service_files, "SERVICIOS")
@@ -173,10 +175,10 @@ class EmojiCleaner:
         """Limpia archivos de extractores principales"""
         
         extractor_files = [
-            'src/extractors/afinia/oficina_virtual_afinia_modular.py',
-            'src/extractors/aire/oficina_virtual_aire_modular.py',
-            'src/core/download_manager.py',
-            'src/utils/performance_monitor.py'
+            'Merc/services/afinia_extractor.py',
+            'Merc/services/aire_extractor.py',
+            'Merc/core/authentication_manager.py',
+            'Merc/utils/performance_monitor.py'
         ]
         
         self._process_file_list(extractor_files, "EXTRACTORES")
@@ -184,34 +186,8 @@ class EmojiCleaner:
     def _process_file_list(self, files: list, category: str) -> None:
         """Procesa una lista de archivos de una categoria específica"""
         project_root = Path('C:/00_Project_Dev/ExtractorOV_Modular')
-        
+
         print(f"LIMPIEZA DE EMOJIS - ARCHIVOS {category}")
-        print("=" * 50)
-        
-        if self.dry_run:
-            print("MODO: DRY RUN (Sin hacer cambios)")
-        else:
-            print("MODO: APLICAR CAMBIOS")
-            
-        print()
-        
-        for file_name in files:
-            file_path = project_root / file_name
-            
-            if file_path.exists():
-                print(f"Procesando: {file_name}")
-                if self.clean_file(str(file_path)):
-                    print(f"  CAMBIOS DETECTADOS en {Path(file_name).name}")
-                else:
-                    print(f"  Sin cambios necesarios en {Path(file_name).name}")
-                print()
-            else:
-                print(f"ARCHIVO NO ENCONTRADO: {file_name}")
-                print()
-        
-        project_root = Path('C:/00_Project_Dev/ExtractorOV_Modular')
-        
-        print("LIMPIEZA DE EMOJIS - ARCHIVOS CRITICOS")
         print("=" * 50)
         
         if self.dry_run:
@@ -255,6 +231,7 @@ def main():
     print("Desarrollado por: ISES | Analyst Data Jeam Paul Arcon Solano")
     print()
     
+    # Default behavior: dry-run critical files
     # Primero ejecutar en modo dry-run para archivos críticos
     cleaner = EmojiCleaner(dry_run=True)
     cleaner.clean_critical_files()
@@ -274,35 +251,46 @@ def main():
 if __name__ == "__main__":
     import sys
     
+    # Configurar un logger básico para el script
+    logging.basicConfig(level=logging.INFO, format='[%(levelname)s] %(message)s')
+
     if '--apply-critical' in sys.argv:
-        print("APLICANDO CAMBIOS A ARCHIVOS CRITICOS...")
+        logging.info("APLICANDO CAMBIOS A ARCHIVOS CRITICOS...")
         cleaner = EmojiCleaner(dry_run=False)
         cleaner.clean_critical_files() 
         cleaner.show_summary()
         
     elif '--apply-components' in sys.argv:
-        print("APLICANDO CAMBIOS A COMPONENTES...")
+        logging.info("APLICANDO CAMBIOS A COMPONENTES...")
         cleaner = EmojiCleaner(dry_run=False)
         cleaner.clean_component_files()
         cleaner.show_summary()
         
     elif '--apply-services' in sys.argv:
-        print("APLICANDO CAMBIOS A SERVICIOS...")
+        logging.info("APLICANDO CAMBIOS A SERVICIOS...")
         cleaner = EmojiCleaner(dry_run=False)
         cleaner.clean_service_files()
         cleaner.show_summary()
         
     elif '--apply-extractors' in sys.argv:
-        print("APLICANDO CAMBIOS A EXTRACTORES...")
+        logging.info("APLICANDO CAMBIOS A EXTRACTORES...")
         cleaner = EmojiCleaner(dry_run=False)
         cleaner.clean_extractor_files()
         cleaner.show_summary()
         
     elif '--apply-all' in sys.argv:
-        print("APLICANDO CAMBIOS A TODOS LOS ARCHIVOS...")
+        logging.info("APLICANDO CAMBIOS A TODOS LOS ARCHIVOS...")
         cleaner = EmojiCleaner(dry_run=False)
         cleaner.clean_critical_files()
         cleaner.clean_component_files() 
+        cleaner.clean_service_files()
+        cleaner.clean_extractor_files()
+        cleaner.show_summary()
+    elif '--test-all' in sys.argv: # Añadido para compatibilidad con PROJECT_STANDARDS.md
+        logging.info("PROBANDO TODOS LOS ARCHIVOS (DRY RUN)...")
+        cleaner = EmojiCleaner(dry_run=True)
+        cleaner.clean_critical_files()
+        cleaner.clean_component_files()
         cleaner.clean_service_files()
         cleaner.clean_extractor_files()
         cleaner.show_summary()

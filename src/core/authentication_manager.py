@@ -11,6 +11,7 @@ import logging
 from typing import Dict, Any, Optional, List
 from playwright.sync_api import Page
 from dotenv import load_dotenv
+from src.config.f_config_06.config import get_extractor_config
 
 logger = logging.getLogger(__name__)
 
@@ -25,77 +26,10 @@ class AuthenticationManager:
     def __init__(self, company: str):
         self.company = company.lower()
         self.credentials = self._load_credentials()
-        
-        # Configuraciones específicas por empresa
-        self.auth_configs = {
-            "afinia": {
-                "login_url": "https://serviciospqrs.afinia.com.co/mercurio/",
-                "selectors": {
-                    "username": [
-                        "input[name='usuario']",
-                        "input[id='usuario']",
-                        "#usuario"
-                    ],
-                    "password": [
-                        "input[name='contrasena']",
-                        "input[id='contrasena']",
-                        "#contrasena"
-                    ],
-                    "login_button": [
-                        "#ingresar",
-                        "input[id='ingresar']",
-                        "input[name='Submit'][type='button']",
-                        "input[type='button'][value='Ingresar'][class='botones']",
-                        "input[onclick*='verificarLogueado']",
-                        "input[type='button'][value='Ingresar']",
-                        "input[class='botones']",
-                        "input[name='Submit']",
-                        "input[value='Ingresar']",
-                        "input[type='button']"
-                    ]
-                },
-                "success_indicators": [
-                    "text=Bienvenido",
-                    "text=Mercurio",
-                    ".menu-principal",
-                    "a[href*='consultaEspecial']"
-                ]
-            },
-            "aire": {
-                "login_url": "https://mercurio.aire.com.co/Mercurio/",
-                "selectors": {
-                    "username": [
-                        "input[name='ctl00$ContentPlaceHolder1$txtUsuario']",
-                        "input[type='text']",
-                        "#ctl00_ContentPlaceHolder1_txtUsuario"
-                    ],
-                    "password": [
-                        "input[name='ctl00$ContentPlaceHolder1$txtPassword']",
-                        "input[type='password']", 
-                        "#ctl00_ContentPlaceHolder1_txtPassword"
-                    ],
-                    "login_button": [
-                        "input[name='ctl00$ContentPlaceHolder1$btnIngresar']",
-                        "input[type='submit'][value='Ingresar']",
-                        "input[type='submit']",
-                        "input[type='button']",
-                        "button[type='submit']",
-                        "button",
-                        "#ctl00_ContentPlaceHolder1_btnIngresar",
-                        "input[name='Submit']",
-                        "*:has-text('Ingresar')",
-                        "*:has-text('Login')",
-                        "*:has-text('Entrar')"
-                    ]
-                },
-                "success_indicators": [
-                    "text=Bienvenido",
-                    "text=Mercurio",
-                    ".contenido-principal",
-                    "a[href*='consultaEspecial']"
-                ]
-            }
-        }
+        self.config = get_extractor_config(self.company)
+
+        if not self.config:
+            raise ValueError(f"No se encontró configuración para la empresa: {self.company}")
     
     def _load_credentials(self) -> Dict[str, str]:
         """Cargar credenciales desde variables de entorno"""
@@ -122,11 +56,7 @@ class AuthenticationManager:
     
     def get_login_url(self) -> str:
         """Obtener URL de login para la empresa"""
-        config = self.auth_configs.get(self.company)
-        if not config:
-            raise ValueError(f"Empresa no soportada: {self.company}")
-        
-        return config["login_url"]
+        return self.config.get("login_url", "")
     
     def authenticate(self, page: Page, username: str = None, password: str = None) -> bool:
         """
@@ -148,14 +78,10 @@ class AuthenticationManager:
             if not auth_username or not auth_password:
                 raise Exception("Credenciales no configuradas")
             
-            config = self.auth_configs.get(self.company)
-            if not config:
-                raise Exception(f"Configuración no encontrada para: {self.company}")
-            
             logger.info(f"[{self.company.upper()}] Iniciando autenticación...")
             
             # Navegar a página de login
-            login_url = config["login_url"]
+            login_url = self.get_login_url()
             logger.info(f"[{self.company.upper()}] Navegando a: {login_url}")
             
             try:
@@ -176,15 +102,15 @@ class AuthenticationManager:
                 page.wait_for_timeout(3000)
             
             # Llenar campo de usuario
-            if not self._fill_field(page, config["selectors"]["username"], auth_username):
+            if not self._fill_field(page, self.config["selectors"]["username"], auth_username):
                 raise Exception("No se pudo llenar el campo de usuario")
             
             # Llenar campo de contraseña
-            if not self._fill_field(page, config["selectors"]["password"], auth_password):
+            if not self._fill_field(page, self.config["selectors"]["password"], auth_password):
                 raise Exception("No se pudo llenar el campo de contraseña")
             
             # Hacer clic en botón de login
-            if not self._click_element(page, config["selectors"]["login_button"]):
+            if not self._click_element(page, self.config["selectors"]["login_button"]):
                 raise Exception("No se pudo hacer clic en el botón de login")
             
             # Esperar a que complete el login con timeout más corto
@@ -196,7 +122,7 @@ class AuthenticationManager:
                 page.wait_for_timeout(3000)
             
             # Verificar éxito del login
-            if self._verify_login_success(page, config["success_indicators"]):
+            if self._verify_login_success(page, self.config["success_indicators"]):
                 logger.info(f"[{self.company.upper()}] Autenticación exitosa")
                 return True
             else:

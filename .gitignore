@@ -103,6 +103,9 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
+# Node.js
+node_modules/
+
 # Downloads and temporary files
 downloads/
 temp/

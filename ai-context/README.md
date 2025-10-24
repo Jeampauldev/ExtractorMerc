@@ -1,6 +1,7 @@
 # AI Context Directory
 
 ## 🤖 Información para Agentes IA y Desarrolladores Automáticos
+## 🤖 Contexto de IA para el Ecosistema `Mercurio`
 
 Esta carpeta contiene información especializada para facilitar el trabajo de agentes IA, herramientas de desarrollo automático y nuevos desarrolladores que necesiten entender rápidamente el proyecto.
 
@@ -19,6 +20,7 @@ Esta carpeta contiene información especializada para facilitar el trabajo de ag
 ### `TECHNICAL_CONTEXT.md`
 **Contexto técnico detallado del sistema**
 - Estado actual del sistema
+- Estado actual del ecosistema Mercurio
 - Arquitectura de datos (RDS, S3)
 - Flujo de datos paso a paso
 - Componentes críticos
@@ -64,6 +66,9 @@ Esta carpeta contiene información especializada para facilitar el trabajo de ag
 # Antes de hacer cambios
 python scripts/validate_functionality.py
 python -c "from afinia_manager import AfiniaManager; print('System OK')"
+# Antes de hacer cambios (desde la raíz del proyecto)
+python Merc/scripts/verify_mercurio_health.py
+python -c "from Merc.main import run_test_mode; run_test_mode()"
 ```
 
 ### 3. Hacer Cambios Seguros
@@ -148,18 +153,16 @@ print('Initialization OK')
 ## 📊 Estado del Proyecto
 
 ### ✅ Completado
-- Sistema de logging profesional sin emojis
-- Limpieza de archivos críticos y componentes
-- Scripts de automatización y verificación
-- Documentación para IAs
+- Arquitectura base de `Merc` implementada.
+- Estándares de logging profesional definidos.
+- Scripts de limpieza y verificación para el ecosistema `Merc`.
+- Documentación de `ai-context` enfocada en Mercurio.
 
 ### 🔄 En Progreso
-- Integración completa con RDS
-- Optimización de servicios S3
-- Dashboard de monitoreo
-- Scripts de mantenimiento
+- Migración final de lógica desde `legacy` y `src_OV` a `Merc`.
+- Refactorización de extractores (Afinia, Aire) para usar 100% componentes de `Merc`.
+- Implementación de dashboard de monitoreo con métricas de Mercurio.
 
----
 
 ## 💡 Tips para IAs
 
@@ -196,8 +199,8 @@ else:
 # Siempre aplicar después de modificar archivos
 import subprocess
 result = subprocess.run([
-    "python", 
-    "scripts/clean_emojis_professional.py", 
+    "python",
+    "Merc/scripts/clean_emojis_professional.py",
     "--apply-all"
 ], capture_output=True, text=True)
 
